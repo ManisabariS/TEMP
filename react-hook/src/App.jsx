@@ -1,39 +1,73 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css';
 
 function App() {
-  const [data, setData] = useState(0);
+  const [data, setData] = useState([0]); // Array to manage multiple data sets
   const [total, setTotal] = useState(0);
-  const [visibility, setVisibility] =useState(false)
+  const [visibility, setVisibility] = useState(false);
+  const count = useRef(0); // Persistent counter across renders
 
-  function increment() {
-    setData(data + 1);
+  // Runs only once after the component mounts
+  useEffect(() => {
+    count.current++;
+    console.log(`Component mounted successfully.. Count: ${count.current}`);
+    getDataFromApi()
+  }, []);
+
+  // Increment value for a specific data index
+  function increment(index) {
+    setData(prevData => {
+      
+      const updatedData = [...prevData];
+      updatedData[index]++;
+      return updatedData;
+    });
   }
 
-  function reset(i) {
-    setData(i);
+  // Reset value for a specific data index
+  function reset(index) {
+    setData(prevData => {
+      const updatedData = [...prevData];
+      updatedData[index] = 0;
+      return updatedData;
+    });
   }
 
-  function showTotal() {
+  // Show total for a specific data index
+  function showTotal(value) {
     setVisibility(true);
-    setTotal(data);
-    setTimeout(()=>setVisibility(false),300);
+    setTotal(value);
+    setTimeout(() => setVisibility(false), 1000);
   }
-  function print(){
-    console.log("Print function is executed");
+
+  // Add a new data entry dynamically
+  function addNewData() {
+    setData(prevData => [...prevData, 0]);
+  }
+
+  //fetch data from api
+  function getDataFromApi(){
+    fetch("https://fakerapi.it/api/v2/persons",{method:"GET"})
+    .then((res)=>res.json())
+    .then((data)=>console.log(data))
+    .catch((error)=>console.log(error))
   }
   return (
     <>
-      <h1><span><pre>Data: {data}      </pre> </span>
-      {visibility && (<span>Total: {total}</span>)}</h1>
-      <button onClick={increment}>Add</button>
-      <button onClick={() => reset(0)}>Reset</button>
-      <button onClick={showTotal}>Show Total</button>
-      
-      <button onClick={print}>print</button>
+      {data.map((value, index) => (
+        <div key={index}>
+          <h1>
+            Data{index + 1}: {value} {visibility && <span>Total: {total}</span>}
+          </h1>
+          <button onClick={() => increment(index)}>Add</button>
+          <button onClick={() => reset(index)}>Reset</button>
+          <button onClick={() => showTotal(value)}>Show Total</button>
+        </div>
+      ))}
 
       
-
+      <button onClick={addNewData}>Add New Data</button>
+      
     </>
   );
 }
