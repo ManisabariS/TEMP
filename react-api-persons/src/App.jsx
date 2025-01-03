@@ -1,40 +1,42 @@
 import { useEffect, useState } from "react";
-import "./App.css";
-import Persons from "./components/Persons";
-
-function App() {
-  const [persons, setPersons] = useState([]);
+import Person from "./components/Person";
+import './App.css'
+function App()
+{
+  const [dbData,setDbData] = useState([]);
   useEffect(() => {
-    getData();
-  }, []);
-  function getData() {
-    try {
-      fetch("https://fakerapi.it/api/v2/persons", {
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          if(json){
-            setPersons(json.data);
-          }
-          else{
-            console.log("Error Data fetching")
-          }
-        });
-    } catch (error) {
-      console.log(error);
+    getDataFromApi('https://fakerapi.it/api/v2/persons')
+
+},[]); // Runs whenever dbData changes
+
+  
+  async function getDataFromApi(url){
+    try{
+      const response = await fetch(url);
+      // console.log('Gathered response from API: \n ',response);
+      const gatheredData = await response.json();
+      // console.log('Gathered data from API: \n ',gatheredData);
+      if(gatheredData.data)
+      {
+        setDbData(gatheredData.data);
+      }
     }
+    catch(error){
+      console.error('Program generated an error: ', error)
+    }
+  
   }
-
-  return (
+  return(
     <>
-      <h2 style={{ textAlign: "center" }}>Persons-Api</h2>
-      <Persons persons={persons}/>
+      {console.table(dbData)}
+      {dbData.map((eachPerson)=>{
+        return(
+          <Person key={eachPerson.id} eachPerson={eachPerson}/>
+        )
+      })}
+
     </>
-  );
+  )
+
 }
-
 export default App;
-
-
-

@@ -1,0 +1,8 @@
+.person-card{
+    border: none;
+    max-width: 200px;
+    height: 300px;
+    background-color: rgb(216, 216, 216);
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
+    text-align: center;
+}

@@ -1,3 +1,62 @@
+https://fakerapi.it/api/v2/persons
+https://jsonplaceholder.typicode.com/posts
+
+App.jsx
+import { useEffect, useState } from "react";
+import "./App.css";
+import Persons from "./components/Persons";
+
+function App() {
+  const [persons, setPersons] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  function getData() {
+    fetch("https://fakerapi.it/api/v2/persons", {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((json) => {
+        if (json?.data) {
+          setPersons(json.data);
+        } else {
+          console.error("Error: No data found.");
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error.message);
+      });
+  }
+
+  return (
+    <>
+      <h2 className="header">Persons-Api</h2>
+      <Persons persons={persons} />
+      <a
+        id="download-link"
+        href="picture.jpg28"
+        download="picture.jpg"
+      >
+        <img
+          src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&dpr=1"
+          alt="Downloadable Image"
+          className="download-image"
+        />
+      </a>
+    </>
+  );
+}
+
+export default App;
+
+Persons.jsx
 import PropTypes from "prop-types";
 const Persons = (props) => {
     const{persons}=props;
@@ -58,3 +117,7 @@ Persons.propTypes = {
       })
     ).isRequired,
   };
+
+
+
+
