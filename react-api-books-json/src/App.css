@@ -1,0 +1,89 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* Books Container */
+.books-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Book Card */
+.book {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    background-color: rgb(236, 236, 236);
+    padding: 20px 15px;
+    width: 220px;
+    height: 400px;
+    border-radius: 8px;
+    text-align: justify;
+    margin: 5px 10px;
+    word-wrap: break-word;
+    overflow: hidden;
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.3);
+    position: relative; /* Enables absolute positioning for child elements */
+}
+
+/* Book ID Container */
+.book-id-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgb(1, 14, 114);
+    color: white;
+    border-radius: 4px;
+}
+
+.book-id-container span {
+    padding: 8px 10px;
+}
+
+/* Cart and Buy Button Container */
+.cart-buy-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    position: absolute; /* Allows positioning relative to the card */
+    bottom: 10px; /* Places the buttons near the bottom of the card */
+    width: 90%; /* Ensures buttons span across most of the card width */
+    left: 50%; /* Centers the container horizontally */
+    transform: translateX(-50%);
+}
+
+/* Buttons */
+.cart-buy-container button {
+    height: 30px; /* Adjusted for better size */
+    width: 45%; /* Ensures buttons take equal width */
+    border: none;
+    background-color:  rgb(81, 81, 81);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cart-buy-container button:hover {
+    background-color: rgb(3, 27, 145); /* Slightly lighter shade on hover */
+}
+
+/* Optional: Styling for the title and body */
+.book h3 {
+    font-size: 1.2em;
+    margin: 15px 0;
+    color: rgb(20, 20, 20);
+}
+
+.book-body {
+    font-size: 0.9em;
+    line-height: 1.4;
+    color: rgb(60, 60, 60);
+    margin-bottom: 50px; /* Adds space above the buttons */
+}

@@ -1,0 +1,123 @@
+https://fakerapi.it/api/v2/persons
+https://jsonplaceholder.typicode.com/posts
+
+App.jsx
+import { useEffect, useState } from "react";
+import "./App.css";
+import Persons from "./components/Persons";
+
+function App() {
+  const [persons, setPersons] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  function getData() {
+    fetch("https://fakerapi.it/api/v2/persons", {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((json) => {
+        if (json?.data) {
+          setPersons(json.data);
+        } else {
+          console.error("Error: No data found.");
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error.message);
+      });
+  }
+
+  return (
+    <>
+      <h2 className="header">Persons-Api</h2>
+      <Persons persons={persons} />
+      <a
+        id="download-link"
+        href="picture.jpg28"
+        download="picture.jpg"
+      >
+        <img
+          src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&dpr=1"
+          alt="Downloadable Image"
+          className="download-image"
+        />
+      </a>
+    </>
+  );
+}
+
+export default App;
+
+Persons.jsx
+import PropTypes from "prop-types";
+const Persons = (props) => {
+    const{persons}=props;
+  return (
+    <>
+    <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+    {
+      persons.map((person,idx)=>(
+        <>
+        {console.log(person)}
+        <div key={idx} style={{marginRight:"20px", marginBottom:"20px",textAlign:'center', border:'1px solid grey',width:'250px',maxHeight:'500px',borderRadius:'8px',display:'flex',flexDirection:'column', backgroundColor:'RGB(250,250,250)'}}>
+              <h2>{person.id}.{person.firstname}</h2>
+              <h3>{person.lastname}</h3>
+              <span style={{textAlign:'left',paddingLeft:'20px'}}>
+              <h4>Details:</h4>
+              <p>Gender: {person.gender}</p>
+              <p>Birthday: {person.birthday}</p>
+              <p>E-mail: {person.email}</p>
+              <p>Phone: {person.website}</p>
+            
+              <p>Address: </p>
+              <p style={{textAlign:'left',paddingLeft:'40px'}}>{person.address.street}</p>
+              <p style={{textAlign:'left',paddingLeft:'40px'}}>{person.address.city}</p>
+              <p style={{textAlign:'left',paddingLeft:'40px'}}>{person.address.country}</p>
+              
+              
+              </span>
+              
+              
+        </div>
+        </>
+        
+      ))
+    }
+    </div>
+        
+    </>
+    
+  )
+}
+
+export default Persons
+Persons.propTypes = {
+    persons: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        firstname: PropTypes.string,
+        lastname: PropTypes.string,
+        phone: PropTypes.string,
+        email:PropTypes.string,
+        birthday:PropTypes.string,
+        address:PropTypes.object,
+        gender:PropTypes.string,
+        website:PropTypes.string,
+        image:PropTypes.string,
+        
+
+      })
+    ).isRequired,
+  };
+
+
+
+
